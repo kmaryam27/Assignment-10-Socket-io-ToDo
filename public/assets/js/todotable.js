@@ -44,9 +44,10 @@ $(() => {
    * @param {Array of todo} dataList 
    */
   const renderTables = (outputElement, dataList) => {
-    searchList(dataList);
-    dataList.reverse();
-    dataList.forEach(e => {
+    event.preventDefault();
+      searchList(dataList);
+      dataList.reverse();
+      dataList.forEach(e => {
         const output = $(outputElement);
         let listItem = $(`<li class='mt-4 todoItems' id='${e._id}'>`);
         if(e.compeleted === false){
@@ -61,14 +62,14 @@ $(() => {
         );
       }
         output.append(listItem);
-    });
+      });
+    
   }
 
   /**
    * @description The AJAX function uses the URL of our API to GET the data associated with it (initially set to localhost)
    */
   const render = function () {
-    $('#inputTxtId').val('');
     $.ajax({ url: "/api/todolist", method: "GET" })
       .then((todoList) => {
        renderTables('#todo', todoList);
@@ -88,6 +89,7 @@ $(() => {
   
   switch(true){
     case ((newTask.task).trim() !== ''):
+       $('#inputTxtId').val('');
         $.ajax({ url: "/api/addNewTask", method: "POST", data: newTask}).then((data) => {
           socket.emit('new-task', {task: data});
           });

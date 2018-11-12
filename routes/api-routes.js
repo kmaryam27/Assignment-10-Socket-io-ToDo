@@ -10,7 +10,7 @@ module.exports = function(app) {
    * @returns json array of all fields
    */
   app.get('/api/todolist', function(req, res) {
-      db.ToDoList.find({}).then(function(dbtodolist){
+      db.ToDoList.find({}).then(function(dbtodolist){  
         res.json(dbtodolist);
     })
     .catch(function(err){
