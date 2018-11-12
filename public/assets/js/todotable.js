@@ -3,11 +3,13 @@
  */
 const socket = io();
 const date = moment().format('llll');
+let autoCompArray = [];
 
 /**
  * @description getting and showing date top on header and load all to do list on load page
  */
 $(() => {
+  
   $(document).ready(() => {
    const fields = date.split(',');
     $('#date1').text(fields[0]);
@@ -17,11 +19,32 @@ $(() => {
   });
 
   /**
+   * @description uses for Auto compelete words
+   * @param {Array of todo} dataList 
+   */
+  const searchList = function(dataList){
+    autoCompArray = [];
+    autoCompArray.push(dataList[0].task);
+    for (let i = 1; i < dataList.length; i++) {
+      let checkDuplicate = false;
+      for (let j = 0; j < autoCompArray.length; j++) {
+       if(dataList[i].task === autoCompArray[j]) {
+         checkDuplicate = true;
+         break;
+       }
+      }
+      if(checkDuplicate === false) autoCompArray.push(dataList[i].task);
+    }
+
+  }
+
+  /**
    * @description show all to do list to the page
    * @param {HTMLElement} outputElement 
    * @param {Array of todo} dataList 
    */
   const renderTables = (outputElement, dataList) => {
+    searchList(dataList);
     dataList.reverse();
     dataList.forEach(e => {
         const output = $(outputElement);
@@ -31,12 +54,11 @@ $(() => {
             $("<p>").text(e.task),
             $("<button style='font-size:24px' class='removeBtn'>").text('')
           );
-          console.log('false');
         }else {
         listItem.append(
           $("<p class='finishedTask'>").text(e.task),
           $("<button style='font-size:24px'  class='fas fa-times removeBtn'>").text('')
-        );console.log('true');
+        );
       }
         output.append(listItem);
     });
@@ -129,89 +151,104 @@ const checkOpration = function () {
   
   $('#todo').on('click','.removeBtn' , checkOpration);
 
+  /**
+   * @description with change inputTxtId input tag make Auto compelete
+   */
+  let currentFocus;
+  $('#inputTxtId').on("input", function(e) {
+    let a, b, i, val = this.value;
+    closeAllLists();//
+    if (!val) { return false;}
+    currentFocus = -1;
+    a = document.createElement("DIV");
+    a.setAttribute("id", this.id + "autocomplete-list");
+    a.setAttribute("class", "autocomplete-items");
+    this.parentNode.appendChild(a);
+    for (i = 0; i < autoCompArray.length; i++) {
+      if (autoCompArray[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+        b = document.createElement("DIV");
+        b.innerHTML = "<strong>" + autoCompArray[i].substr(0, val.length) + "</strong>";
+        b.innerHTML += autoCompArray[i].substr(val.length);
+        b.innerHTML += "<input type='hidden' value='" + autoCompArray[i] + "'>";
+            b.addEventListener("click", function(e) {
+              document.getElementById('inputTxtId').value = this.getElementsByTagName("input")[0].value;
+            closeAllLists();
+        });
+        a.appendChild(b);
+      }
+    }
+});
 
+ /**
+   * @description close all autocomplete lists in the document, except the one passed as an argument:
+   */
+  function closeAllLists(elmnt) {
+    var x = document.getElementsByClassName("autocomplete-items");
+    const inp = $('#inputTxtId');
+    for (var i = 0; i < x.length; i++) {
+      if (elmnt != x[i] && elmnt != inp) {
+      x[i].parentNode.removeChild(x[i]);
+    }
+  }
+}
 
+/**
+   * @description execute a function presses a key on the keyboard:
+   * @description:40  If the arrow DOWN key is pressed,increase the currentFocus variable:
+   * @description: 38 If the arrow UP key is pressed,decrease the currentFocus variable:
+   * @description: 13 enter
+   */
+  $('#inputTxtId').on("keydown", function(e) {
+    var x = document.getElementById(this.id + "autocomplete-list");
+    if (x) x = x.getElementsByTagName("div");
+    if (e.keyCode == 40) {
+      currentFocus++;
+      addActive(x);
+    } else if (e.keyCode == 38) { 
+      currentFocus--;
+      addActive(x);
+    } else if (e.keyCode == 13) {
+      e.preventDefault();
+      if (currentFocus > -1) {
+        if (x){
+           x[currentFocus].click();
+           currentFocus = -1;
+          }
+      }else { 
+        if (currentFocus === -1) {
+        closeAllLists(e.target); 
+        addNewTask();
+        }
+      }
+    }
+});
 
-  /////////////////////////////////////////////////////////////////// Auto text compelete practice
- 
+/**
+   * @description a function to classify an item as "active": start by removing the "active" class on all items: add class "autocomplete-active":
+   */
+  function addActive(x) {
+    if (!x) return false;
+    removeActive(x);
+    if (currentFocus >= x.length) currentFocus = 0;
+    if (currentFocus < 0) currentFocus = (x.length - 1);
+    x[currentFocus].classList.add("autocomplete-active");
+  }
 
+  /**
+   * @description a function to remove the "active" class from all autocomplete items:
+   */
+  function removeActive(x) {
+    for (var i = 0; i < x.length; i++) {
+      x[i].classList.remove("autocomplete-active");
+    }
+  }
 
-
-  // $('#inputTxtId').on("click", function () {
-  //   event.preventDefault();
-  //   // let currentFocus = -1;
-  //   autoItemCounter = [];
-  //   $.ajax({ url: "/api/todolist", method: "GET" })
-  //   .then((todoList) => {
-  //     const inp = document.getElementById("inputTxtId");
-  //     const arr = todoList.map(e => e.task);
-
-  //     $('#inputTxtId').keydown(function (e) {
-  //       if (($(this).val().trim() === '')&&((String.fromCharCode(e.keyCode)).trim() === '')) {
-  //          return String.fromCharCode(e.keyCode);
-  //         }else{
-            
-           
-  //           let val = $(this).val() + (String.fromCharCode(e.keyCode));
-
-  //           if((e.keyCode == 40) || (e.keyCode == 38) || (e.keyCode == 13)){
-               
-  //           //  if(autoItemCounter.length > 0){
-  //           //   if (e.keyCode == 40) {/*arrow DOWN key*/
-  //           //     currentFocus++;
-  //           //     // addActive(currentFocus);
-  //           //   } else if (e.keyCode == 38) {/*arrow UP key*/
-  //           //     currentFocus--;
-  //           //     // addActive(currentFocus);
-  //           //   } else if (e.keyCode == 13) {/*ENTER key*/
-  //           //     e.preventDefault();
-  //           //     if (currentFocus > -1) {/*"active"*/
-                
-  //           //     $('#autocomplete-list').empty();/**.detach() */
-  //           //     $('#autocomplete-list').on('click','.autoItem' ,function(){
-                  
-  //           //       $('#inputTxtId').val(`${autoItemCounter[currentFocus]}`);
-  //           //     });
-                
-  //           //     }
-  //           //   }
-              
-  //           //  }
-  //           }
-  //           else{
-  //             $('#autocomplete-list').empty();/**.detach() */
-  //             for (i = 0; i < arr.length; i++) {
-  //               if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-  //                 autoItemCounter.push(arr[i]);
-  //                 addToAutoItems(arr, i, val);
-  //               }
-  //             }
-  //           }
-
-  //         }
-  //     });
-  //   });
-  // });
-
-
-  // const addToAutoItems = function(arr, i, val){
-  //   $('#autocomplete-list').css('display', 'block');
-  //   const b = document.createElement('div');
-  //   b.classList.add('autoItem');
-  //   b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-  //   b.innerHTML += arr[i].substr(val.length);
-  //   b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-
-  //   b.addEventListener("click", function(e) {
-  //     $('#inputTxtId').val(`${arr[i]}`);
-  //         closeAllLists();
-  //       });
-  //   $('#autocomplete-list').append(b);
-  // }
-
-    
-
-  
+   /**
+   * @description execute a function when someone clicks in the document:
+   */
+document.addEventListener("click", function (e) {
+  closeAllLists(e.target);
+});
 
 });
 

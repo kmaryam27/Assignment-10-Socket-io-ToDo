@@ -27,7 +27,7 @@ body{
     margin-left: 2%;
 }
 
-/**********************form for new task*****************************/
+/*************form for new task****************/
 .form-group {
     text-align: center;
     margin-top: 10px;
@@ -49,7 +49,7 @@ form {
 }
 
 
-/************************todo list container***************************/
+/**********todo list container***************/
  #todo {
     margin: 10%;
     margin-top: 1%;
@@ -81,12 +81,27 @@ p{
     border: 2px solid #1AC5E3;
     color: #1AC5E3;
 }
+.removeBtn:hover{
+    cursor: pointer;
+}
 .finishedTask{
     color: rgb(150, 150, 150);
 }
 
-/***************************Auto compelete*******************************/
-/* .autocomplete-items {
+/***************Auto compelete************/
+.autocomplete {
+    position: relative;
+    display: inline-block;
+  }
+  input[type=text] {
+    background-color: #f1f1f1;
+    width: 100%;
+  }
+  input[type=submit] {
+    background-color: DodgerBlue;
+    color: #fff;
+  }
+.autocomplete-items {
     position: absolute;
     border: 1px solid #d4d4d4;
     border-bottom: none;
@@ -95,7 +110,7 @@ p{
     top: 100%;
     left: 0;
     right: 0;
-    width: 90%;
+    width: 100%;
   }
 
   .autocomplete-items div {
@@ -108,10 +123,10 @@ p{
     background-color: #e9e9e9; 
   }
   .autocomplete-active {
-    background-color: rgb(255, 30, 30) !important; 
+    background-color: rgb(114, 202, 243) !important; 
     color: #ffffff; 
   }
 
   #autocomplete-list{
       display: none;
-  } */
+  }
