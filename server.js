@@ -24,5 +24,4 @@ require('./sockets/todo-sockets')(io);
 require('./routes/api-routes.js')(app);
 require('./routes/html-routes.js')(app);
 
-
 server.listen((process.env.PORT || 8080), () => {console.log(`App is now listening on PORT ${PORT}`)});

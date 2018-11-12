@@ -54,12 +54,14 @@ form {
     margin: 10%;
     margin-top: 1%;
     text-align: center;
+    border: none;
 } 
 
 .todoItems{
     display: grid;
     grid-template-columns: 1fr 0.05fr;
     grid-template-rows: 1fr;
+    border: none;
 }
 
 #checkboxId{

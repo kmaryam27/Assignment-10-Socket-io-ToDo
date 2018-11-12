@@ -25,9 +25,8 @@ $(() => {
     dataList.reverse();
     dataList.forEach(e => {
         const output = $(outputElement);
-        let listItem = $(`<li class='list-group-item mt-4 todoItems' id='${e._id}'>`);
+        let listItem = $(`<li class='mt-4 todoItems' id='${e._id}'>`);
         if(e.compeleted === false){
-          listItem = $(`<li disabled class='list-group-item mt-4 todoItems' id='${e._id}'>`);
           listItem.append(
             $("<p>").text(e.task),
             $("<button style='font-size:24px' class='removeBtn'>").text('')
@@ -93,7 +92,7 @@ socket.on('emit-task', (data) => {
  * @description enter btn pressed to add new to do
  */
 $(document).keypress(function(e) {
-  if ( e.keyCode === 13 ) // w
+  if ( e.keyCode === 13 )
       addNewTask();
 });
    
@@ -128,7 +127,6 @@ const checkOpration = function () {
       };
     }
   
-
   $('#todo').on('click','.removeBtn' , checkOpration);
 
 
