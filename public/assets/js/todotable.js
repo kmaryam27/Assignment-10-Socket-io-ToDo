@@ -117,20 +117,13 @@ const checkOpration = function () {
         }
         
         $.ajax({url: `/api/selected/${taskDel.task_id}`,  method: "GET"}).then(function(selected) {
-            if(selected.compeleted === false){
+            
               const result = confirm("Are you sure to delete?");
               if (result) {
-                $.ajax({url: "/api/removeTask",  method: "DELETE", data: taskDel}).then(function() {
+                $.ajax({url: "/api/removeTask",  method: "DELETE", data: taskDel}).then(function(data) {
                   socket.emit('delete-task', {task: data});
                   });
               }
-            }else{
-              $.ajax({url: "/api/removeTask",  method: "DELETE", data: taskDel}).then(function() {
-                $("#todo").empty();
-                  render();
-                });
-            }
-    
           });
       };
     }
