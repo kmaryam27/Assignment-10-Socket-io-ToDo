@@ -1,5 +1,4 @@
 /***********developer: Maryam Keshavarz**********/
-/*******************Mobile version***************/
 body{
     background-color: #F0EFE9;
 }
@@ -49,16 +48,6 @@ form {
     border-bottom: 2px solid rgb(56, 56, 56);
 }
 
-/* #addBtn{
-    background-color: transparent;
-    border: transparent;
-    font-size:20px;
-    width: 7%;
-    position: absolute;
-    top: 20%;
-    right: 1%;
-} */
-
 
 /************************todo list container***************************/
  #todo {
@@ -68,8 +57,6 @@ form {
 } 
 
 .todoItems{
-    /* background-color: rgb(238, 237, 237); */
-    /* border-radius: 25px; */
     display: grid;
     grid-template-columns: 1fr 0.05fr;
     grid-template-rows: 1fr;
@@ -126,18 +113,3 @@ p{
   #autocomplete-list{
       display: none;
   } */
-
-/* *******************Desktop version*********************
-@media only screen and (min-width: 600px){
-    main{
-        border: none;
-    }
-    h1{
-        font-size: 36px;
-    }
-
-    #addBtn{
-        font-size:24px;
-    } 
-
-} */

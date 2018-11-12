@@ -5,6 +5,14 @@ module.exports = function(io) {
             io.emit('emit-task', data);
         });
 
+        socket.on('update-task', (data) => {
+            io.emit('emit-task', data);
+        });
+
+        socket.on('delete-task', (data) => {
+            io.emit('emit-task', data);
+        });
+
     });
   }
 
