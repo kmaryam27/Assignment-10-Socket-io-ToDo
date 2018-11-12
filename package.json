@@ -1,0 +1,29 @@
+{
+  "name": "to-do-list-app",
+  "version": "1.0.0",
+  "description": "assignment 6 make a to do list with node.js and deploy on heroku",
+  "main": "server.js",
+  "scripts": {
+    "test": "npm test for assignment 6",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kmaryam27/Assignment-7-to-do-list-App-mongoDB"
+  },
+  "author": "Maryam Keshavarz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kmaryam27/Assignment-7-to-do-list-App-mongoDB/issues"
+  },
+  "homepage": "https://github.com/kmaryam27/Assignment-7-to-do-list-App-mongoDB#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "mongoose": "^5.3.0",
+    "prettier": "^1.15.1",
+    "socket.io": "^2.1.1"
+  },
+  "devDependencies": {
+    "jsdoc": "^3.5.5"
+  }
+}
