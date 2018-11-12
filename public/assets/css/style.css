@@ -85,11 +85,15 @@ p{
     font-weight: bold;
 }
 
-#removeBtn{
+.removeBtn{
     background: transparent;
+    background-color: transparent;
     border-radius: 50%;
     border: 2px solid #1AC5E3;
     color: #1AC5E3;
+}
+.finishedTask{
+    color: rgb(150, 150, 150);
 }
 
 /***************************Auto compelete*******************************/

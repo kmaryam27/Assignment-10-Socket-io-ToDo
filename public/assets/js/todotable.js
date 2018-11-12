@@ -24,15 +24,15 @@ $(() => {
           listItem.append(
             // $("<input type='checkbox' id='checkboxId'>").prop( "checked", checkedBoolean ),
             $("<p>").text(e.task),
-            $("<button style='font-size:24px' id='removeBtn'>").text('')
+            $("<button style='font-size:24px' class='removeBtn'>").text('')
           );
           console.log('false');
         }else {
           // checkedBoolean = true;
         listItem.append(
           // $("<input type='checkbox' id='checkboxId'>").prop( "checked", checkedBoolean ),
-          $("<p>").text(e.task),
-          $("<button style='font-size:24px'  class='fas fa-times' id='removeBtn'>").text('')
+          $("<p class='finishedTask'>").text(e.task),
+          $("<button style='font-size:24px'  class='fas fa-times removeBtn'>").text('')
         );console.log('true');
       }
         output.append(listItem);
@@ -116,11 +116,49 @@ $(document).keypress(function(e) {
     
     }
 
-  $('#todo').on('click','#removeBtn' , removeTask);
+    const checkOpration = function () {
+      event.preventDefault();
+      if(!$(this).hasClass("fas")){
+        taskDel = {
+          task_id: String($(this).parent().attr('id')),
+          compeleted: true
+        }
+    
+        $.ajax({url: "/api/updateTask",  method: "PUT", data: taskDel}).then(function() {
+          $("#todo").empty();
+            render();
+          });
+      }else{
+        taskDel = {
+          task_id: String($(this).parent().attr('id'))
+        }
+        
+        $.ajax({url: `/api/selected/${taskDel.task_id}`,  method: "GET"}).then(function(selected) {
+            if(selected.compeleted === false){
+              const result = confirm("Are you sure to delete?");
+              if (result) {
+                $.ajax({url: "/api/removeTask",  method: "DELETE", data: taskDel}).then(function() {
+                  $("#todo").empty();
+                    render();
+                  });
+              }
+            }else{
+              $.ajax({url: "/api/removeTask",  method: "DELETE", data: taskDel}).then(function() {
+                $("#todo").empty();
+                  render();
+                });
+            }
+    
+          });
+      };
+    }
+  
 
+  $('#todo').on('click','.removeBtn' , checkOpration);
+
+ 
   const updateTask = function () {
     event.preventDefault();
-
     taskDel = {
       task_id: String($(this).parent().attr('id')),
       compeleted: String($(this).prop( "checked"))
@@ -132,7 +170,7 @@ $(document).keypress(function(e) {
       });
     }
 
-  $('#todo').on('click','#checkboxId' , updateTask);
+  // $('#todo').on('click','#checkboxId' , updateTask);
 
 
   /////////////////////////////////////////////////////////////////// Auto text compelete practice
