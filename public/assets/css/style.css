@@ -77,8 +77,8 @@ p{
 .removeBtn{
     background: transparent;
     background-color: transparent;
-    border-radius: 50%;
-    border: 2px solid #1AC5E3;
+    border: none;
+    /*border: 2px solid #1AC5E3; */
     color: #1AC5E3;
 }
 .removeBtn:hover{

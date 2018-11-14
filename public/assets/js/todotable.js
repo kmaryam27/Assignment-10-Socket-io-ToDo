@@ -52,12 +52,12 @@ $(() => {
         if(e.compeleted === false){
           listItem.append(
             $("<p>").text(e.task),
-            $("<button style='font-size:24px' class='removeBtn'>").text('')
+            $("<button style='font-size:24px' class='far fa-circle removeBtn'>").text('')
           );
         }else {
         listItem.append(
           $("<p class='finishedTask'>").text(e.task),
-          $("<button style='font-size:24px'  class='fas fa-times removeBtn'>").text('')
+          $("<button style='font-size:24px'  class='far fa-times-circle removeBtn doneToDo'>").text('')
         );
       }
         output.append(listItem);
@@ -124,7 +124,7 @@ $(document).keypress(function(e) {
  */
 const checkOpration = function () {
       event.preventDefault();
-      if(!$(this).hasClass("fas")){
+      if(!$(this).hasClass("doneToDo")){
         taskDel = {
           task_id: String($(this).parent().attr('id')),
           compeleted: true
